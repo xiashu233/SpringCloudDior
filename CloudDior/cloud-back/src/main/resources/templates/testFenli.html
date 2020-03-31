@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(测试)">
+
+</head>
+<body>
+
+    <section class="section" style="margin:0px;padding:0px;">
+
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="card card-sm-3">
+                    <div class="card-icon bg-primary">
+                        <i class="ion ion-person"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Total Admin</h4>
+                        </div>
+                        <div class="card-body">
+                            10
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="card card-sm-3">
+                    <div class="card-icon bg-danger">
+                        <i class="ion ion-ios-paper-outline"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>News</h4>
+                        </div>
+                        <div class="card-body">
+                            42
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="card card-sm-3">
+                    <div class="card-icon bg-warning">
+                        <i class="ion ion-paper-airplane"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Reports</h4>
+                        </div>
+                        <div class="card-body">
+                            1,201
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="card card-sm-3">
+                    <div class="card-icon bg-success">
+                        <i class="ion ion-record"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Online Users</h4>
+                        </div>
+                        <div class="card-body">
+                            47
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-12 col-12 col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="float-right">
+                            <div class="btn-group">
+                                <a href="#" class="btn active">周</a>
+                                <a href="#" class="btn">月</a>
+                                <a href="#" class="btn">年</a>
+                            </div>
+                        </div>
+                        <h3>销售额统计</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="myChart" height="158"></canvas>
+                        <div class="statistic-details mt-sm-4">
+
+                            <div class="statistic-details-item">
+                                <small class="text-muted"><span class="text-primary"><i class="ion-arrow-up-b"></i></span> 7%</small>
+                                <div class="detail-value">$243</div>
+                                <div class="detail-name">Today's Sales</div>
+                            </div>
+                            <div class="statistic-details-item">
+                                <small class="text-muted"><span class="text-danger"><i class="ion-arrow-down-b"></i></span> 23%</small>
+                                <div class="detail-value">$2,902</div>
+                                <div class="detail-name">This Week's Sales</div>
+                            </div>
+                            <div class="statistic-details-item">
+                                <small class="text-muted"><span class="text-primary"><i class="ion-arrow-up-b"></i></span>9%</small>
+                                <div class="detail-value">$12,821</div>
+                                <div class="detail-name">This Month's Sales</div>
+                            </div>
+                            <div class="statistic-details-item">
+                                <small class="text-muted"><span class="text-primary"><i class="ion-arrow-up-b"></i></span> 19%</small>
+                                <div class="detail-value">$92,142</div>
+                                <div class="detail-name">This Year's Sales</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-12 col-12 col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Recent Activities</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled list-unstyled-border">
+                            <li class="media">
+                                <img class="mr-3 rounded-circle" width="50" src="/img/avatar/avatar-1.jpeg" alt="avatar">
+                                <div class="media-body">
+                                    <div class="float-right"><small>10m</small></div>
+                                    <div class="media-title">Farhan A Mujib</div>
+                                    <small>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.</small>
+                                </div>
+                            </li>
+                            <li class="media">
+                                <img class="mr-3 rounded-circle" width="50" src="/img/avatar/avatar-2.jpeg" alt="avatar">
+                                <div class="media-body">
+                                    <div class="float-right"><small>10m</small></div>
+                                    <div class="media-title">Ujang Maman</div>
+                                    <small>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.</small>
+                                </div>
+                            </li>
+                            <li class="media">
+                                <img class="mr-3 rounded-circle" width="50" src="/img/avatar/avatar-3.jpeg" alt="avatar">
+                                <div class="media-body">
+                                    <div class="float-right"><small>10m</small></div>
+                                    <div class="media-title">Rizal Fakhri</div>
+                                    <small>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.</small>
+                                </div>
+                            </li>
+                            <li class="media">
+                                <img class="mr-3 rounded-circle" width="50" src="/img/avatar/avatar-4.jpeg" alt="avatar">
+                                <div class="media-body">
+                                    <div class="float-right"><small>10m</small></div>
+                                    <div class="media-title">Alfa Zulkarnain</div>
+                                    <small>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.</small>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="text-center">
+                            <a href="#" class="btn btn-primary btn-round">
+                                View All
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+
+
+
+
+<footer class="main-footer" th:replace="_fragments :: footer">
+
+</footer>
+
+<div th:replace="_fragments :: scripts">
+    <script src="/modules/jquery-3.2.1.js"></script>
+</div>
+
+    <script>
+        showChart();
+
+        function showChart(){
+            var ctx = document.getElementById("myChart").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "4.7"],
+                    datasets: [{
+                        label: 'Statistics',
+                        data: [460, 458, 330, 502, 430, 610, 488],
+                        borderWidth: 2,
+                        backgroundColor: 'rgb(87,75,144)',
+                        borderColor: 'rgb(87,75,144)',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#ffffff',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                stepSize: 150
+                            }
+                        }],
+                        xAxes: [{
+                            gridLines: {
+                                display: false
+                            }
+                        }]
+                    },
+                }
+            });
+        }
+
+        $(".btn-group .btn").click(function () {
+            $(this).addClass('active').siblings().removeClass('active')
+            var op = $(this).text();
+
+            console.log(op)
+        })
+    </script>
+</body>
+</html>
