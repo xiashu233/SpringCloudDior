@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(测试)">
+
+</head>
+<body>
+
+    <section class="section" style="margin:0px;padding:0px;">
+
+        <div class="row">
+            <div class="card-body">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">商品信息管理</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">商品管理</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+
+
+        <div class="card card-primary catalogCard" >
+
+            <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>一级分类</label>
+                            <select class="form-control catalog1">
+                                <option value="-1">请选择一级分类</option>
+                                <option th:value="${catalog1.id}" th:text="${catalog1.name}" th:each="catalog1:${catalog1List}">女士精品</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>二级分类</label>
+                            <select class="form-control catalog2">
+                                <option value="-1">请选择二级分类</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>三级分类</label>
+                            <select class="form-control catalog3">
+                                <option value="-1">请选择三级分类</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="row mt-5">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+
+                                    <div class="float-right">
+
+                                            <div class="input-group">
+
+                                                <input type="text" class="form-control" placeholder="Search">
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-secondary"><i class="ion ion-search"></i></button>
+                                                </div>
+                                            </div>
+
+                                    </div>
+
+                                    <h3>商品列表</h3>
+                                    <div>
+                                        <button class="btn btn-success addProc">添加商品</button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <th class="text-center">
+                                                    <div class="custom-checkbox custom-control">
+                                                        <input type="checkbox" data-checkboxes="mygroup" data-checkbox-role="dad" class="custom-control-input" id="checkbox-all">
+                                                        <label for="checkbox-all" class="custom-control-label"></label>
+                                                    </div>
+                                                </th>
+                                                <th>商品名称</th>
+                                                <th>商品图片</th>
+                                                <th>价格</th>
+                                                <th>标签</th>
+                                                <th>状态</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            <tr>
+                                                <td width="40">
+                                                    <div class="custom-checkbox custom-control">
+                                                        <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1">
+                                                        <label for="checkbox-1" class="custom-control-label"></label>
+                                                    </div>
+                                                </td>
+                                                <td>Create a mobile app</td>
+                                                <td>
+                                                    <img alt="image" src="/img/avatar/avatar-5.jpeg" class="rounded-circle" width="35" data-toggle="title" title="Wildan Ahdian">
+                                                    <img alt="image" src="/img/avatar/avatar-5.jpeg" class="rounded-circle" width="35" data-toggle="title" title="Wildan Ahdian">
+                                                    <img alt="image" src="/img/avatar/avatar-5.jpeg" class="rounded-circle" width="35" data-toggle="title" title="Wildan Ahdian">
+                                                    <img alt="image" src="/img/avatar/avatar-5.jpeg" class="rounded-circle" width="35" data-toggle="title" title="Wildan Ahdian">
+
+                                                </td>
+                                                <td class="align-middle">
+                                                    <div class="progress" style="height: 4px;" data-toggle="tooltip" title="100%">
+                                                        <div class="progress-bar bg-success" style="width: 100%;"></div>
+                                                    </div>
+                                                </td>
+
+                                                <td>2018-01-20</td>
+                                                <td style="line-height: 20px">
+                                                    <div class="badge badge-success" >上架中</div>
+                                                </td>
+                                                <td>
+                                                    <button href="#" class="btn btn-action btn-success">详情</button>
+                                                    <button href="#" class="btn btn-action btn-warning">修改</button>
+                                                    <button href="#" class="btn btn-action btn-danger">详情</button>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-right">
+                                    <nav class="d-inline-block">
+                                        <ul class="pagination mb-0">
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="#" tabindex="-1"><i class="ion ion-chevron-left"></i></a>
+                                            </li>
+                                            <li class="page-item active"><a class="page-link" href="#">1 <span class="sr-only">(current)</span></a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">2</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#"><i class="ion ion-chevron-right"></i></a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="form-group">
+                        <button type="button" id="testBtn" class="btn btn-primary btn-block" >
+                            测试按钮
+                        </button>
+                    </div>
+
+            </div>
+        </div>
+
+    </section>
+
+
+    <!--  添加修改商品模态框  -->
+    <div class="modal fade container-fluid" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog" style="width:1100px">
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">
+                        模态框（Modal）标题拉克丝距离喀什来得及拉克斯基的啦就是领导
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div style="text-align: center;width: 1500px">
+                        123
+                    </div>
+                    <h1>模态框大小测试阿里卡时间段</h1>
+                    点击关闭按钮检查事件功能。
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+<footer class="main-footer" th:replace="_fragments :: footer">
+
+</footer>
+
+<div th:replace="_fragments :: scripts">
+    <script src="/modules/jquery-3.2.1.js"></script>
+    <script src="js/jQuery.form.js"></script>
+</div>
+
+<script>
+
+    $('#testBtn').click(function () {
+        $('#myModal').modal('show').css({
+            width: 'auto',
+            'margin-left': function () {
+                return -($(this).width() / 2);
+            }
+        });
+    })
+
+
+    $('.catalog1').change(function () {
+        var catalog1 = $(".catalog1 option:selected").val()
+        if (catalog1 != -1){
+            console.log('catalog1Id:' + catalog1)
+
+            $.post({
+                url:"/getcatalog2/" + catalog1,
+                success:function (result) {
+                    console.log('返回状态码：' + result.code);
+                    $(".catalog2 option:gt(0)").remove()
+                    if (result.code == 200){
+
+                        for (var catalog = 0;catalog<result.data.length;catalog++){
+                            $('.catalog2').html($('.catalog2').html() + '<option value="' + result.data[catalog].id +'">' + result.data[catalog].name + '</option>')
+                        }
+                    }
+                }
+            })
+        }
+    });
+
+    $('.catalog2').change(function () {
+        var catalog2 = $(".catalog2 option:selected").val()
+        if (catalog2 != -1){
+            console.log('catalog2Id:' + catalog2)
+
+            $.post({
+                url:"/getcatalog3/" + catalog2,
+                success:function (result) {
+                    console.log('返回状态码：' + result.code);
+                    $(".catalog3 option:gt(0)").remove()
+                    if (result.code == 200){
+
+                        for (var catalog = 0;catalog<result.data.length;catalog++){
+                            $('.catalog3').html($('.catalog3').html() + '<option value="' + result.data[catalog].id +'">' + result.data[catalog].name + '</option>')
+                        }
+                    }
+                }
+            })
+        }
+    });
+
+</script>
+</body>
+</html>

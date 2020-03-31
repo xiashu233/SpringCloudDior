@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(测试)">
+
+</head>
+<body>
+
+    <section class="section" style="margin:0px;padding:0px;">
+
+        <div class="row">
+            <div class="card-body">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">基本信息管理</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">商品分类管理</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+
+
+        <div class="card card-primary catalogCard" >
+
+            <div class="card-body">
+                <form id="addCatalog" method="POST" action="/addCatalog">
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>一级分类</label>
+                            <select class="form-control catalog1">
+                                <option value="-1">请选择一级分类</option>
+                                <option th:value="${catalog1.id}" th:text="${catalog1.name}" th:each="catalog1:${catalog1List}">女士精品</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>二级分类</label>
+                            <select class="form-control catalog2">
+                                <option value="-1">请选择二级分类</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>三级分类</label>
+                            <select class="form-control catalog3">
+                                <option value="-1">请选择三级分类</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>下方请填写需要新增的分类</label>
+                            <div class="input-group">
+                                <input type="text" name="catalog1txt" class="form-control catalog1txt">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary diyCatalog1" type="button">自定义</button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>&nbsp;</label>
+                            <<div class="input-group">
+                            <input type="text" name="catalog2txt" class="form-control catalog2txt">
+                            <span class="input-group-btn">
+                                    <button class="btn btn-primary diyCatalog2" type="button">自定义</button>
+                                </span>
+                        </div>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>&nbsp;</label>
+                            <div class="input-group">
+                                <input type="text" name="catalog3txt"  class="form-control catalog3txt">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary diyCatalog3" type="button">自定义</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="catalog1" value="-1">
+                    <input type="hidden" name="catalog2" value="-1">
+
+                    <div class="form-group">
+                        <button type="button" id="submitBtn" class="btn btn-primary btn-block">
+                            添加分类
+                        </button>
+
+                        <button type="button" id="testBtn" class="btn btn-primary btn-block">
+                            测试按钮
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </section>
+
+
+
+
+<footer class="main-footer" th:replace="_fragments :: footer">
+
+</footer>
+
+<div th:replace="_fragments :: scripts">
+    <script src="/modules/jquery-3.2.1.js"></script>
+    <script src="js/jQuery.form.js"></script>
+</div>
+
+<script>
+    $("#submitBtn").click(function () {
+        $('#addCatalog').ajaxSubmit(function (result) {
+            if (result.code == 200){
+                toastr.success('添加该分类成功，请勿重复提交!','分类管理');
+            }else{
+                toastr.error('添加该分类失败，请检查信息是否填写正确后再次提交!','分类管理');
+            }
+
+        })
+    });
+    $('#testBtn').click(function () {
+        toastr.error('添加该分类失败，请检查信息是否填写正确后再次提交!','分类管理');
+    })
+
+    $('.diyCatalog1').click(function () {
+        toastr.success('下面请自定义一级分类!','分类管理');
+        $('input[name=catalog1]').val(-1);
+        $('.catalog1txt').val('')
+    })
+    $('.diyCatalog2').click(function () {
+        toastr.success('下面请自定义二级分类!','分类管理');
+        $('input[name=catalog2]').val(-1);
+        $('.catalog2txt').val('')
+    })
+    $('.diyCatalog3').click(function () {
+        toastr.success('下面请自定义三级分类!','分类管理');
+        $('input[name=catalog3]').val(-1);
+        $('.catalog3txt').val('')
+    })
+
+    $('.catalog1').change(function () {
+        var catalog1 = $(".catalog1 option:selected").val()
+        if (catalog1 != -1){
+            console.log('catalog1Id:' + catalog1)
+            $('input[name=catalog1]').val(catalog1)
+            $('.catalog1txt').val($(".catalog1 option:selected").text())
+            $.post({
+                url:"/getcatalog2/" + catalog1,
+                success:function (result) {
+                    console.log('返回状态码：' + result.code);
+                    $(".catalog2 option:gt(0)").remove()
+                    if (result.code == 200){
+
+                        for (var catalog = 0;catalog<result.data.length;catalog++){
+                            $('.catalog2').html($('.catalog2').html() + '<option value="' + result.data[catalog].id +'">' + result.data[catalog].name + '</option>')
+                        }
+                    }
+                }
+            })
+        }
+    });
+
+    $('.catalog2').change(function () {
+        var catalog2 = $(".catalog2 option:selected").val()
+        if (catalog2 != -1){
+            console.log('catalog2Id:' + catalog2)
+            $('input[name=catalog2]').val(catalog2)
+            $('.catalog2txt').val($(".catalog2 option:selected").text())
+            $.post({
+                url:"/getcatalog3/" + catalog2,
+                success:function (result) {
+                    console.log('返回状态码：' + result.code);
+                    $(".catalog3 option:gt(0)").remove()
+                    if (result.code == 200){
+
+                        for (var catalog = 0;catalog<result.data.length;catalog++){
+                            $('.catalog3').html($('.catalog3').html() + '<option value="' + result.data[catalog].id +'">' + result.data[catalog].name + '</option>')
+                        }
+                    }
+                }
+            })
+        }
+    });
+
+</script>
+</body>
+</html>
