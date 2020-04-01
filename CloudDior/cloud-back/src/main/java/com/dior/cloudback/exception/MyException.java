@@ -1,4 +1,4 @@
-package com.dior.exception;
+package com.dior.cloudback.exception;
 
 import org.springframework.boot.web.server.ConfigurableWebServerFactory;
 import org.springframework.boot.web.server.ErrorPage;

@@ -19,6 +19,8 @@ public class PmsProductImage implements Serializable {
     private String imgName;
     @Column
     private String imgUrl;
+    @Column
+    private String isDefault;
 
     public PmsProductImage() {
     }
@@ -53,5 +55,13 @@ public class PmsProductImage implements Serializable {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public String getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(String isDefault) {
+        this.isDefault = isDefault;
     }
 }

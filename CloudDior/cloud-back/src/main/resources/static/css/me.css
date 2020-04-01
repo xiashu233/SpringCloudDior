@@ -9,3 +9,23 @@
 .catalogCard{
     min-height: 580px !important;
 }
+
+.uploadImg{
+    position: relative;
+}
+
+.delIcon{
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    left: 35px;
+    top: -10px;
+    cursor: pointer;
+}
+
+/*@media (min-width: 992px) {*/
+/*    .modal-lg {*/
+/*        with: 1800px !important;*/
+/*    }*/
+/*}*/
