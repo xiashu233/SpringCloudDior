@@ -1,8 +1,5 @@
 package com.dior.bean;
 
-//import com.atguigu.gmall.bean.SpuImage;
-//import com.atguigu.gmall.bean.SpuSaleAttr;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -14,9 +11,8 @@ import java.util.List;
 
 public class PmsProductInfo implements Serializable {
 
-    @Column
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator="JDBC")
     private String id;
 
     @Column
@@ -33,7 +29,7 @@ public class PmsProductInfo implements Serializable {
     private String productTag;
 
     @Transient
-    private List<PmsProductSaleAttr> spuSaleAttrList;
+    private List<PmsProductSaleAttrValue> spuSaleAttrValueList;
     @Transient
     private List<PmsProductImage> spuImageList;
 
@@ -46,12 +42,12 @@ public class PmsProductInfo implements Serializable {
         this.productName = productName;
     }
 
-    public List<PmsProductSaleAttr> getSpuSaleAttrList() {
-        return spuSaleAttrList;
+    public List<PmsProductSaleAttrValue> getSpuSaleAttrValueList() {
+        return spuSaleAttrValueList;
     }
 
-    public void setSpuSaleAttrList(List<PmsProductSaleAttr> spuSaleAttrList) {
-        this.spuSaleAttrList = spuSaleAttrList;
+    public void setSpuSaleAttrValueList(List<PmsProductSaleAttrValue> spuSaleAttrValueList) {
+        this.spuSaleAttrValueList = spuSaleAttrValueList;
     }
 
     public List<PmsProductImage> getSpuImageList() {

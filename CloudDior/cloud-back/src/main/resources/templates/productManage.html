@@ -55,7 +55,7 @@
 
                                             <div class="input-group">
 
-                                                <input type="text" class="form-control" placeholder="Search">
+                                                <input type="text" class="form-control" placeholder="搜索">
                                                 <div class="input-group-btn">
                                                     <button class="btn btn-secondary"><i class="ion ion-search"></i></button>
                                                 </div>
@@ -65,12 +65,13 @@
 
                                     <h3>商品列表</h3>
                                     <div>
-                                        <button class="btn btn-success addProc">添加商品</button>
+                                        <button class="btn btn-success addProc" >添加商品</button>
+                                        <button class="btn btn-danger removeProc" >删除商品</button>
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table table-striped">
+                                        <table class="table table-striped allProc">
                                             <tr>
                                                 <th class="text-center">
                                                     <div class="custom-checkbox custom-control">
@@ -85,37 +86,7 @@
                                                 <th>状态</th>
                                                 <th>操作</th>
                                             </tr>
-                                            <tr>
-                                                <td width="40">
-                                                    <div class="custom-checkbox custom-control">
-                                                        <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1">
-                                                        <label for="checkbox-1" class="custom-control-label"></label>
-                                                    </div>
-                                                </td>
-                                                <td>Create a mobile app</td>
-                                                <td>
-                                                    <img alt="image" src="/img/avatar/avatar-5.jpeg" class="rounded-circle" width="35" data-toggle="title" title="Wildan Ahdian">
-                                                    <img alt="image" src="/img/avatar/avatar-5.jpeg" class="rounded-circle" width="35" data-toggle="title" title="Wildan Ahdian">
-                                                    <img alt="image" src="/img/avatar/avatar-5.jpeg" class="rounded-circle" width="35" data-toggle="title" title="Wildan Ahdian">
-                                                    <img alt="image" src="/img/avatar/avatar-5.jpeg" class="rounded-circle" width="35" data-toggle="title" title="Wildan Ahdian">
 
-                                                </td>
-                                                <td class="align-middle">
-                                                    <div class="progress" style="height: 4px;" data-toggle="tooltip" title="100%">
-                                                        <div class="progress-bar bg-success" style="width: 100%;"></div>
-                                                    </div>
-                                                </td>
-
-                                                <td>2018-01-20</td>
-                                                <td style="line-height: 20px">
-                                                    <div class="badge badge-success" >上架中</div>
-                                                </td>
-                                                <td>
-                                                    <button href="#" class="btn btn-action btn-success">详情</button>
-                                                    <button href="#" class="btn btn-action btn-warning">修改</button>
-                                                    <button href="#" class="btn btn-action btn-danger">详情</button>
-                                                </td>
-                                            </tr>
 
                                         </table>
                                     </div>
@@ -143,13 +114,6 @@
 
 
 
-
-                    <div class="form-group">
-                        <button type="button" id="testBtn" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModal">
-                            测试按钮
-                        </button>
-                    </div>
-
             </div>
         </div>
 
@@ -161,7 +125,6 @@
         <div class="modal-dialog modal-lg" >
             <div class="modal-content" >
                 <div class="modal-body">
-
 
                     <form class="form-horizontal" role="form" id="uploadImg" method="post" action="/uploadImg" enctype="multipart/form-data">
                         <input type="hidden" name="catalog3Id" value="-1">
@@ -197,6 +160,28 @@
                         </div>
 
                         <div class="form-group">
+                            <div class="card">
+                                <div class="card-header">
+                                    <button type="button" class="btn btn-success addAttrItem">添加销售属性</button>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <input type="hidden" name="attrMap" value="">
+                                        <table class="table table-striped attrTable">
+                                            <tr>
+                                                <th>属性名称</th>
+                                                <th>属性值</th>
+                                                <th>操作</th>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
                             <label>商品描述：</label>
                             <textarea class="summernote-simple" name="description"></textarea>
                         </div>
@@ -217,6 +202,7 @@
                                     </li>
 
                                 </div>
+                                <input type="hidden" name="defaultImgIndex" value="0">
                                 <input type="hidden" id="imgListHide" name="imgList" value="">
                                 <div class="col-lg-8  imgList row">
 
@@ -237,6 +223,8 @@
 
 
 
+
+
 <footer class="main-footer" th:replace="_fragments :: footer">
 
 </footer>
@@ -247,10 +235,61 @@
 </div>
 
 <script>
+    $('.addProc').click(function () {
+        var catalog3 = $(".catalog3 option:selected").val()
+        if (catalog3 != -1){
+            $('#myModal').modal('show')
+        }else{
+            toastr.warning('未选择三级分类，请选择后再次新增商品','新增商品')
+        }
+    })
 
-    $('#testBtn').click(function () {
-
+    $('.addAttrItem').click(function () {
+        var attritem = '<tr >\n' +
+            '                <td>\n' +
+            '                    <select class="form-control">\n' +
+            '                           <option value="1">尺码</option>\n' +
+            '                           <option value="2">色号</option>\n' +
+            '                    </select>\n' +
+            '                 </td>\n' +
+            '                 <td class="row">\n' +
+            '                    <button type="button" class="btn btn-sm btn-primary addAttr">添加</button>\n' +
+            '                 </td>\n' +
+            '                 <td>\n' +
+            '                     <button type="button" class="btn btn-action btn-danger btn-delAttrItem">删除</button>\n' +
+            '                 </td>\n' +
+            '             </tr>';
+        $('.attrTable').append($(attritem))
     });
+    // 新增属性值按钮
+    $(document).on('click','.addAttr',function (){
+        if (($(this).parent().find('input[type=text]').length == 0 && $(this).parent().find('span').length == 0) || $(this).parent().find('input[type=text]').length == 0){
+            $(this).before('<input type="text" value="" class="form-control attrItem" style="width: 60px">');
+        }else{
+            toastr.error('请检查是否有未填写的属性值项！', '添加属性值!');
+        }
+    });
+
+    // 属性失去焦点时触发
+    $(document).on('blur','.attrItem',function (){
+        var attrVal = $(this).val()
+
+        if (attrVal != ""){
+            console.log(attrVal)
+            $(this).before('<span class="btn btn-info btn-sm .m-r-pd-sm attrVal">' + attrVal +'</span>')
+            $(this).remove()
+        }
+    });
+
+    $(document).on('click','.attrVal',function (){
+        $(this).remove()
+    });
+
+    $(document).on('click','.btn-delAttrItem',function (){
+        $(this).parent().parent().remove()
+    });
+
+
 
     $('.upload').click(function () {
         $('input[name=upload]').click();
@@ -270,16 +309,53 @@
 
         console.log($('input[name=imgList]').val())
 
+        // 拼装表格信息
+        if ($('.attrTable').find('tr').length > 1){
+            var map = {};
+            $('.attrTable').find('tr').each(function () {
+                var key = $(this).find('td:eq(0)').find('select').val();
+                if (key == undefined){
+                    console.log('此时是第一列')
+                    return true;
+                }
+                console.log('key:' + key)
+                var value = '';
+                $(this).find('td:eq(1)').find('span').each(function () {
+                    value = value + ',' + $(this).text()
+                    console.log($(this).text());
+                })
+                console.log('value:' + value)
+                map[key] = value;
+            })
+            var jsonMap = JSON.stringify(map)
+            $('input[name=attrMap]').val(jsonMap)
+            console.log(jsonMap);
+        }
+
+
+
+
         $('#uploadImg').ajaxSubmit(function(result){
             if(result.code == 200){
-                console.log('插入成功，跳转到正确表单')
-                //window.location = "index.html"
+                toastr.warning('插入成功，请检查数据项是否填写正确！','插入失败');
+                window.location = "/productManage";
             }else{
-                console.log('插入失败，进行跳转或清除数据')
+                toastr.warning('插入失败，请检查数据项是否填写正确！','插入失败');
+
             }
         })
 
-    })
+    });
+
+
+    $(document).on('click','.rounded-circle',function () {
+        var index = $(".imgList img").index(this);
+        console.log(index)
+        $('input[name=defaultImgIndex]').val(index)
+        $(this).addClass('defultImg').parent('.uploadImg').siblings().children('.rounded-circle').removeClass('defultImg');
+
+    });
+
 
 
 
@@ -303,17 +379,20 @@
             data:formData,
             success:function(result){
                 console.log("执行成功:" + result.data)
-                $('.imgList').html($('.imgList').html() +
-                    ' <div class="uploadImg">\n' +
-                    '<img src="' + result.data + '" class="rounded-circle" width="50px" >\n' +
+                var imgItem = ' <div class="uploadImg">\n' +
+                    '<img src="' + result.data + '" class="rounded-circle " width="70px" height="70px">\n' +
                     '<i class="icon ion-close-round delIcon"></i>\n' +
                     '</div>'
-                );
+                $('.imgList').append($(imgItem));
+
                 $('.delIcon').click(function () {
                     console.log('点击了删除按钮');
                     $(this).parent().hide();
                     $(this).parent().remove();
                 });
+
+
+
             },
             error:function(result){
                 console.log("执行失败")
@@ -365,25 +444,97 @@
     });
 
     $('.catalog3').change(function () {
+        $('.allProc tr:gt(0)').remove()
         var catalog3 = $(".catalog3 option:selected").val()
         if (catalog3 != -1){
             console.log('catalog3Id:' + catalog3);
             $('input[name=catalog3Id]').val(catalog3)
-            // $.post({
-            //     url:"/getcatalog2/" + catalog1,
-            //     success:function (result) {
-            //         console.log('返回状态码：' + result.code);
-            //         $(".catalog2 option:gt(0)").remove()
-            //         if (result.code == 200){
-            //
-            //             for (var catalog = 0;catalog<result.data.length;catalog++){
-            //                 $('.catalog2').html($('.catalog2').html() + '<option value="' + result.data[catalog].id +'">' + result.data[catalog].name + '</option>')
-            //             }
-            //         }
-            //     }
-            // })
+            // 查找填充数据到数据库
+            $.post({
+                url:"/getAllProcByCatalog3/" + catalog3,
+                success:function (result) {
+                    console.log('返回状态码：' + result.code);
+                    for (let i = 0; i < result.data.length; i++) {
+                        var imgStr = '';
+                        for (let j = 0; j < result.data[i].spuImageList.length; j++) {
+                            imgStr = imgStr + '<img alt="image" src="'+ result.data[i].spuImageList[j].imgUrl +'" class="rounded-circle" width="35" height="35px" >'
+                        }
+                        $('.allProc').append(
+                            '<tr >\n' +
+                            '   <td width="40">\n' +
+                            '       <div class="custom-checkbox custom-control">\n' +
+                            '            <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1">\n' +
+                            '            <label for="checkbox-1" class="custom-control-label"></label>\n' +
+                            '       </div>\n' +
+                            '   </td>\n' +
+                            '   <td>'+ result.data[i].productName + '</td>\n' +
+                            '   <td>\n' +
+
+                            imgStr +
+
+                            '   </td>\n' +
+                            '   <td class="align-middle">\n' +
+                                    result.data[i].productPrice +
+                            '   </td>\n'+
+                            '   <td class="align-middle">\n' +
+                                       '#' + result.data[i].productTag +
+                            '   </td>\n' +
+                            '   <td class="align-middle">\n' +
+                            '       <div class="badge badge-success" >'+ result.data[i].productStatus +'</div>\n' +
+                            '   </td>\n' +
+                            '   <td >\n' +
+                            '       <button class="btn btn-action btn-success" onclick="descProcItem(' + result.data[i].id +')" >详情</button>\n' +
+                            '       <button class="btn btn-action btn-warning" onclick="changeProcItem(' + result.data[i].id +')" >修改</button>\n' +
+                            '       <button class="btn btn-action btn-danger"  onclick="removeProcItem(' + result.data[i].id +')" >删除</button>\n' +
+                            '   </td>\n' +
+                            '</tr>'
+                        )
+
+                    }
+                }
+            })
         }
     });
+    
+    function removeProcItem(procId) {
+        //console.log(procId)
+        if (confirm("确认删除吗？")){
+            $.post({
+                url: "/deleteProc/" + procId,
+                success: function (result) {
+                    if (result.code == 200){
+                        toastr.success("删除成功！","删除商品");
+                    }else{
+                        toastr.error("删除失败，发生了不可描述的错误！","删除商品");
+                    }
+                }
+            })
+        }
+    };
+
+    function descProcItem(procId) {
+        //console.log(procId)
+            $.post({
+                url: "/getProcById/" + procId,
+                success: function (result) {
+
+
+                }
+            })
+
+    };
+
+    function changeProcItem(procId) {
+        //console.log(procId)
+            $.post({
+                url: "/getProcById/" + procId,
+                success: function (result) {
+
+
+                }
+            })
+
+    };
 
 </script>
 </body>

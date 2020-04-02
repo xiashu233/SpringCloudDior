@@ -1,22 +1,23 @@
 package com.dior.cloudback.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.dior.bean.CommonResult;
 import com.dior.bean.PmsBaseCatalog1;
 import com.dior.bean.PmsProductInfo;
 import com.dior.cloudback.util.QiniuCloudUtil;
 import com.dior.service.CatalogService;
 import com.dior.service.ProcService;
+import com.qiniu.util.Json;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.thymeleaf.util.StringUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -54,16 +55,56 @@ public class procController {
         }
     }
 
+
+    @PostMapping("getAllProcByCatalog3/{catalog3}")
+    public CommonResult getAllProcByCatalog3(@PathVariable("catalog3")String catalog3){
+        List<PmsProductInfo> pmsProductInfoList = procService.getAllProcByCatalog3(catalog3);
+        return new CommonResult(200,"获取商品信息成功",pmsProductInfoList);
+    }
+
     @RequestMapping("saveProc")
-    public CommonResult saveProc(PmsProductInfo pmsProductInfo, @RequestParam("imgList")String imgList, ModelMap map){
-        int procId = procService.addProcInfo(pmsProductInfo);
-        if (procId>0){
-            pmsProductInfo.setId(procId + "");
-            procService.addProcImage(pmsProductInfo.getId(),imgList);
+    public CommonResult saveProc(PmsProductInfo pmsProductInfo, @RequestParam("imgList")String imgList,
+                                 @RequestParam("defaultImgIndex")int defaultImgIndex,
+                                 @RequestParam("attrMap")String attrMapJson,ModelMap map){
+
+        String procId = procService.addProcInfo(pmsProductInfo);
+
+        if (StringUtils.isNotBlank(procId)){
+            pmsProductInfo.setId(procId);
+            procService.addProcImage(procId+"",imgList,defaultImgIndex);
+
+            Map<String,String> attrMap = new HashMap();
+            if (StringUtils.isNotBlank(attrMapJson)){
+
+                procService.addProcAttr(procId,attrMapJson);
+            }
 
             return new CommonResult(200,"新增商品信息成功");
         }
 
         return new CommonResult(500,"新增商品信息失败");
     }
+
+
+    @PostMapping("deleteProc/{id}")
+    public CommonResult deleteProc(@PathVariable("id")String id){
+        // 返回删除总数
+        int delCount = procService.deleteProc(id);
+        if (delCount > 0){
+            return new CommonResult(200,"删除商品信息成功");
+        }
+        return new CommonResult(500,"删除商品信息失败");
+    }
+
+    @PostMapping("getProcById/{id}")
+    public CommonResult getProcById(@PathVariable("id")String id){
+        //
+        PmsProductInfo pmsProductInfo = procService.getProcById(id);
+        if (pmsProductInfo != null){
+            return new CommonResult(200,"获取商品信息成功",pmsProductInfo);
+        }
+        return new CommonResult(500,"获取商品信息失败");
+    }
+
+
 }

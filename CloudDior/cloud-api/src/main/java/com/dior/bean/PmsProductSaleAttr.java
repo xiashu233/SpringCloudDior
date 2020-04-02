@@ -12,12 +12,6 @@ public class PmsProductSaleAttr implements Serializable {
 
     @Id
     @Column
-    String id ;
-
-    @Column
-    String productId;
-
-    @Column
     String saleAttrId;
 
     @Column
@@ -26,22 +20,6 @@ public class PmsProductSaleAttr implements Serializable {
 
     @Transient
     List<PmsProductSaleAttrValue> spuSaleAttrValueList;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
 
     public String getSaleAttrId() {
         return saleAttrId;

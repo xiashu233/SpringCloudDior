@@ -13,13 +13,24 @@
 .uploadImg{
     position: relative;
 }
+.defultImg{
+    border: 2px solid skyblue;
+}
+
+.m-l-pd-sm{
+    margin-left: 5em !important;
+}
+
+.m-r-pd-sm{
+    margin-right: 10px !important;
+}
 
 .delIcon{
     color: red;
     font-size: 20px;
     font-weight: bold;
     position: absolute;
-    left: 35px;
+    left: 50px;
     top: -10px;
     cursor: pointer;
 }
