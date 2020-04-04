@@ -10,7 +10,10 @@ import com.dior.cloudback.mapper.PmsProductSaleAttrValueMapper;
 import com.dior.service.ProcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,15 +72,11 @@ public class ProcServiceImpl implements ProcService {
         PmsProductInfo pmsProductInfo = new PmsProductInfo();
         pmsProductInfo.setCatalog3Id(catalog3);
         List<PmsProductInfo> pmsProductInfoList = pmsProductInfoMapper.select(pmsProductInfo);
-        for (PmsProductInfo productInfo : pmsProductInfoList) {
-            PmsProductImage pmsProductImage = new PmsProductImage();
-            pmsProductImage.setProductId(productInfo.getId());
-            List<PmsProductImage> images = pmsProductImageMapper.select(pmsProductImage);
-            productInfo.setSpuImageList(images);
-
-        }
+        fillData(pmsProductInfoList);
         return pmsProductInfoList;
     }
+
+
 
     @Override
     public int deleteProc(String id) {
@@ -110,7 +109,44 @@ public class ProcServiceImpl implements ProcService {
                 pmsProductInfo.setSpuSaleAttrValueList(valueList);
             }
 
-
         return pmsProductInfo;
+    }
+
+    @Override
+    public List<PmsProductInfo> getProcBySearchKey(String key) {
+        List<PmsProductInfo> pmsProductInfoList = pmsProductInfoMapper.selectProcBySearchKey(key);
+        fillData(pmsProductInfoList);
+        return pmsProductInfoList;
+    }
+
+    @Override
+    public void changeProcInfo(PmsProductInfo pmsProductInfo) {
+        Example example = new Example(pmsProductInfo.getClass());
+        example.createCriteria().andEqualTo("id",pmsProductInfo.getId());
+        pmsProductInfoMapper.updateByExample(pmsProductInfo,example);
+
+    }
+
+    @Override
+    public void deleteProcImageByProcId(String id) {
+        PmsProductImage pmsProductImage = new PmsProductImage();
+        pmsProductImage.setProductId(id);
+        pmsProductImageMapper.delete(pmsProductImage);
+    }
+
+    @Override
+    public void deleteProcAttrValueByProcId(String id) {
+        PmsProductSaleAttrValue pmsProductSaleAttrValue = new PmsProductSaleAttrValue();
+        pmsProductSaleAttrValue.setProductId(id);
+        pmsProductSaleAttrValueMapper.delete(pmsProductSaleAttrValue);
+    }
+
+    private void fillData(List<PmsProductInfo> pmsProductInfoList) {
+        for (PmsProductInfo productInfo : pmsProductInfoList) {
+            PmsProductImage pmsProductImage = new PmsProductImage();
+            pmsProductImage.setProductId(productInfo.getId());
+            List<PmsProductImage> images = pmsProductImageMapper.select(pmsProductImage);
+            productInfo.setSpuImageList(images);
+        }
     }
 }

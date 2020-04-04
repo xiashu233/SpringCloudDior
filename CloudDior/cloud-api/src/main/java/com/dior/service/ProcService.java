@@ -16,4 +16,12 @@ public interface ProcService {
     int deleteProc(String id);
 
     PmsProductInfo getProcById(String id);
+
+    List<PmsProductInfo> getProcBySearchKey(String key);
+
+    void changeProcInfo(PmsProductInfo pmsProductInfo);
+
+    void deleteProcImageByProcId(String id);
+
+    void deleteProcAttrValueByProcId(String id);
 }

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="_fragments :: head(测试)">
+
+</head>
+<body>
+
+<section class="section" style="margin:0px;padding:0px;">
+
+    <div class="row">
+        <div class="card-body">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">商品信息管理</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">官网广告管理</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+
+    <div class="card card-primary catalogCard">
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+
+                        <div class="card-body">
+                            <ul class="nav nav-pills" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="home-tab3" data-toggle="tab" href="#home3" role="tab"
+                                       aria-controls="home" aria-selected="true">官网主页</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="profile-tab3" data-toggle="tab" href="#profile3" role="tab"
+                                       aria-controls="profile" aria-selected="false">女士精品</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="contact-tab3" data-toggle="tab" href="#contact3" role="tab"
+                                       aria-controls="contact" aria-selected="false">男士精品</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="home3" role="tabpanel"
+                                     aria-labelledby="home-tab3">
+                                    <!-- 官网主页 -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="float-right">
+                                                <a data-collapse="#mycard-collapse" class="btn btn-icon"><i class="ion ion-minus"></i></a>
+                                            </div>
+                                            <h6>轮播图-Banner</h6>
+                                        </div>
+                                        <div class="collapse show" id="mycard-collapse">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="banner-List">
+                                                        <img src="img/index/cdc-femme-collection-ete-20205_1440_1200.jpg" width="20%" >
+                                                        <input type="text" value="图片标题">
+                                                        <p>图片描述</p>
+                                                        <p>链接地址</p>
+                                                    </div>
+                                                </div>
+
+                                                You can show or hide this card.
+                                            </div>
+                                            <div class="card-footer">
+                                                Card Footer
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane fade" id="profile3" role="tabpanel" aria-labelledby="profile-tab3">
+                                    Sed sed metus vel lacus hendrerit tempus. Sed efficitur velit tortor, ac efficitur
+                                    est lobortis quis. Nullam lacinia metus erat, sed fermentum justo rutrum ultrices.
+                                    Proin quis iaculis tellus. Etiam ac vehicula eros, pharetra consectetur dui.
+                                </div>
+                                <div class="tab-pane fade" id="contact3" role="tabpanel" aria-labelledby="contact-tab3">
+                                    Vestibulum imperdiet odio sed neque ultricies, ut dapibus mi maximus. Proin ligula
+                                    massa, gravida in lacinia efficitur, hendrerit eget mauris. Pellentesque fermentum,
+                                    sem interdum molestie finibus, nulla diam varius leo, nec varius lectus elit id
+                                    dolor.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+
+<footer class="main-footer" th:replace="_fragments :: footer">
+
+</footer>
+
+<div th:replace="_fragments :: scripts">
+    <script src="/modules/jquery-3.2.1.js"></script>
+    <script src="js/jQuery.form.js"></script>
+</div>
+
+<script>
+
+    function clearProcData() {
+        $('input[name=productName]').val('')
+        $('input[name=productPrice]').val('')
+        // $('select[name=productStatus]').val('')
+        // $('select[name=productTag]').val('')
+        $('.note-editable').html('')
+
+    }
+
+
+    $('.addAttrItem').click(function () {
+        var attritem = '<tr >\n' +
+            '                <td>\n' +
+            '                    <select class="form-control">\n' +
+            '                           <option value="1">尺码</option>\n' +
+            '                           <option value="2">色号</option>\n' +
+            '                    </select>\n' +
+            '                 </td>\n' +
+            '                 <td class="row">\n' +
+            '                    <button type="button" class="btn btn-sm btn-primary addAttr">添加</button>\n' +
+            '                 </td>\n' +
+            '                 <td>\n' +
+            '                     <button type="button" class="btn btn-action btn-danger btn-delAttrItem">删除</button>\n' +
+            '                 </td>\n' +
+            '             </tr>';
+        $('.attrTable').append($(attritem))
+    });
+    // 新增属性值按钮
+    $(document).on('click', '.addAttr', function () {
+        if (($(this).parent().find('input[type=text]').length == 0 && $(this).parent().find('span').length == 0) || $(this).parent().find('input[type=text]').length == 0) {
+            $(this).before('<input type="text" value="" class="form-control attrItem" style="width: 60px">');
+        } else {
+            toastr.error('请检查是否有未填写的属性值项！', '添加属性值!');
+        }
+    });
+
+    // 属性失去焦点时触发
+    $(document).on('blur', '.attrItem', function () {
+        var attrVal = $(this).val()
+
+        if (attrVal != "") {
+            console.log(attrVal)
+            $(this).before('<span class="btn btn-info btn-sm .m-r-pd-sm attrVal">' + attrVal + '</span>')
+            $(this).remove()
+        }
+    });
+
+    $(document).on('click', '.attrVal', function () {
+        $(this).remove()
+    });
+
+    $(document).on('click', '.btn-delAttrItem', function () {
+        $(this).parent().parent().remove()
+    });
+
+
+    $('.upload').click(function () {
+        $('input[name=upload]').click();
+    });
+
+    $('#saveProc').click(function () {
+        console.log('提交表单信息')
+        $('#uploadImg').attr('action', '/saveProc')
+
+        var imgList = $('.imgList').find('img')
+        var imgListStr = '';
+        for (var i = 0; i < imgList.length; i++) {
+            console.log($('.imgList').find('img').eq(i).attr('src'))
+            imgListStr = imgListStr + ',' + $('.imgList').find('img').eq(i).attr('src');
+        }
+        $('#imgListHide').val(imgListStr);
+
+        console.log($('input[name=imgList]').val())
+
+        // 拼装表格信息
+        if ($('.attrTable').find('tr').length > 1) {
+            var map = {};
+            $('.attrTable').find('tr').each(function () {
+                var key = $(this).find('td:eq(0)').find('select').val();
+                if (key == undefined) {
+                    console.log('此时是第一列')
+                    return true;
+                }
+                console.log('key:' + key)
+                var value = '';
+                $(this).find('td:eq(1)').find('span').each(function () {
+                    value = value + ',' + $(this).text()
+                    console.log($(this).text());
+                })
+                console.log('value:' + value)
+                map[key] = value;
+            })
+            var jsonMap = JSON.stringify(map)
+            $('input[name=attrMap]').val(jsonMap)
+            console.log(jsonMap);
+        }
+
+
+        $('#uploadImg').ajaxSubmit(function (result) {
+            if (result.code == 200) {
+                toastr.warning('插入成功，请检查数据项是否填写正确！', '插入失败');
+                window.location = "/productManage";
+            } else {
+                toastr.warning('插入失败，请检查数据项是否填写正确！', '插入失败');
+
+            }
+        })
+
+    });
+
+
+    $(document).on('click', '.rounded-circle', function () {
+        var index = $(".imgList img").index(this);
+        console.log(index)
+        $('input[name=defaultImgIndex]').val(index)
+        $(this).addClass('defultImg').parent('.uploadImg').siblings().children('.rounded-circle').removeClass('defultImg');
+
+    });
+
+    $(document).on('click', '.delIcon', function () {
+        console.log('点击了删除按钮');
+        $(this).parent().hide();
+        $(this).parent().remove();
+    });
+
+
+    function uploadFile() {
+        console.log('已选择文件');
+        var targetUrl = $("#uploadImg").attr("action");
+        var formData = new FormData($("#uploadImg")[0]);
+        var fileSize = document.getElementById("imageFile").files[0].size;
+        console.log(fileSize)
+        if (fileSize > 1024 * 1024) {
+            toastr.warning('图片过大，请压缩后重新上传!', '图片上传');
+            return;
+        }
+        $.ajax({
+            type: 'post',
+            url: targetUrl,
+            cache: false,    //上传文件不需缓存
+            processData: false, //需设置为false。因为data值是FormData对象，不需要对数据做处理
+            contentType: false, //需设置为false。因为是FormData对象，且已经声明了属性enctype="multipart/form-data"
+            data: formData,
+            success: function (result) {
+                console.log("执行成功:" + result.data)
+
+                var imgItem = ' <div class="uploadImg">\n' +
+                    '<img src="' + result.data + '" class="rounded-circle " width="70px" height="70px">\n' +
+                    '<i class="icon ion-close-round delIcon"></i>\n' +
+                    '</div>'
+                $('.imgList').append($(imgItem));
+
+
+            },
+            error: function (result) {
+                console.log("执行失败")
+            }
+        })
+    };
+
+
+    $('.catalog1').change(function () {
+        var catalog1 = $(".catalog1 option:selected").val()
+        if (catalog1 != -1) {
+            console.log('catalog1Id:' + catalog1)
+
+            $.post({
+                url: "/getcatalog2/" + catalog1,
+                success: function (result) {
+                    console.log('返回状态码：' + result.code);
+                    $(".catalog2 option:gt(0)").remove()
+                    if (result.code == 200) {
+
+                        for (var catalog = 0; catalog < result.data.length; catalog++) {
+                            $('.catalog2').html($('.catalog2').html() + '<option value="' + result.data[catalog].id + '">' + result.data[catalog].name + '</option>')
+                        }
+                    }
+                }
+            })
+        }
+    });
+
+    $('.catalog2').change(function () {
+        var catalog2 = $(".catalog2 option:selected").val()
+        if (catalog2 != -1) {
+            console.log('catalog2Id:' + catalog2)
+
+            $.post({
+                url: "/getcatalog3/" + catalog2,
+                success: function (result) {
+                    console.log('返回状态码：' + result.code);
+                    $(".catalog3 option:gt(0)").remove()
+                    if (result.code == 200) {
+
+                        for (var catalog = 0; catalog < result.data.length; catalog++) {
+                            $('.catalog3').html($('.catalog3').html() + '<option value="' + result.data[catalog].id + '">' + result.data[catalog].name + '</option>')
+                        }
+                    }
+                }
+            })
+        }
+    });
+
+    $('.catalog3').change(function () {
+        $('.allProc tr:gt(0)').remove()
+        var catalog3 = $(".catalog3 option:selected").val()
+        if (catalog3 != -1) {
+            console.log('catalog3Id:' + catalog3);
+            $('input[name=catalog3Id]').val(catalog3)
+            // 查找填充数据到数据库
+            $.post({
+                url: "/getAllProcByCatalog3/" + catalog3,
+                success: function (result) {
+                    console.log('返回状态码：' + result.code);
+                    filltable(result);
+                }
+            })
+        }
+    });
+
+    function removeProcItem(procId) {
+        //console.log(procId)
+        if (confirm("确认删除吗？")) {
+            $.post({
+                url: "/deleteProc/" + procId,
+                success: function (result) {
+                    if (result.code == 200) {
+                        toastr.success("删除成功！", "删除商品");
+                    } else {
+                        toastr.error("删除失败，发生了不可描述的错误！", "删除商品");
+                    }
+                }
+            })
+        }
+    };
+
+    function descProcItem(procId) {
+        //console.log(procId)
+        $.post({
+            url: "/getProcById/" + procId,
+            success: function (result) {
+                if (result.code == 200) {
+                    // 填充商品基本信息 名称 价格 描述 分类
+                    addProcInfo(result);
+                    // 填充商品配图
+                    addImgItem(result)
+
+
+                    // 隐藏 上传图片以及保存按钮
+                    $('#saveProc').hide()
+                    $('.uploadImgStr').hide()
+
+                    $('#myModal').modal('show')
+                } else {
+                    toastr.error('查询商品详细信息失败，请稍后重试！', '商品详情')
+                }
+
+
+            }
+        })
+
+    };
+
+    // 修改商品事件
+    function changeProcItem(procId) {
+        //console.log(procId)
+        $.post({
+            url: "/getProcById/" + procId,
+            success: function (result) {
+                // 填充商品基本信息 名称 价格 描述 分类
+                addProcInfo(result);
+                // 填充商品配图
+                addImgItem(result);
+
+                // 设置 procId 来识别是否修改操作
+                $('input[name=id]').val(procId);
+
+                // 显示 上传图片以及保存按钮
+                $('#saveProc').show()
+                $('.uploadImgStr').show()
+
+                $('#myModal').modal('show')
+            }
+        })
+
+    };
+
+    $('.btn-search').click(function () {
+        var key = $('.searchStr').val()
+        $.post({
+            url: '/search/' + key,
+            success: function (result) {
+                filltable(result);
+            }
+        })
+    });
+
+    function filltable(result) {
+        var catalog3 = $(".catalog3 option:selected").val()
+        if (catalog3 == -1) {
+            toastr.warning('未选择三级分类，请选择三级分类后重试此操作！', '查询商品')
+            return
+        }
+
+        $('.allProc').find('tr:gt(0)').remove();
+
+        for (let i = 0; i < result.data.length; i++) {
+            var imgStr = '';
+            for (let j = 0; j < result.data[i].spuImageList.length; j++) {
+                imgStr = imgStr + '<img alt="image" src="' + result.data[i].spuImageList[j].imgUrl + '" class="rounded-circle" width="35" height="35px" >'
+            }
+            $('.allProc').append(
+                '<tr >\n' +
+                '   <td width="40">\n' +
+                '       <div class="custom-checkbox custom-control">\n' +
+                '            <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1">\n' +
+                '            <label for="checkbox-1" class="custom-control-label"></label>\n' +
+                '       </div>\n' +
+                '   </td>\n' +
+                '   <td>' + result.data[i].productName + '</td>\n' +
+                '   <td>\n' +
+
+                imgStr +
+
+                '   </td>\n' +
+                '   <td class="align-middle">\n' +
+                result.data[i].productPrice +
+                '   </td>\n' +
+                '   <td class="align-middle">\n' +
+                '#' + result.data[i].productTag +
+                '   </td>\n' +
+                '   <td class="align-middle">\n' +
+                '       <div class="badge badge-success" >' + result.data[i].productStatus + '</div>\n' +
+                '   </td>\n' +
+                '   <td >\n' +
+                '       <button class="btn btn-action btn-success" onclick="descProcItem(' + result.data[i].id + ')" >详情</button>\n' +
+                '       <button class="btn btn-action btn-warning" onclick="changeProcItem(' + result.data[i].id + ')" >修改</button>\n' +
+                '       <button class="btn btn-action btn-danger"  onclick="removeProcItem(' + result.data[i].id + ')" >删除</button>\n' +
+                '   </td>\n' +
+                '</tr>'
+            )
+
+        }
+
+    };
+
+    function addImgItem(result) {
+        $('.imgList').children().remove()
+        for (let i = 0; i < result.data.spuImageList.length; i++) {
+            var imgItem = ' <div class="uploadImg">\n' +
+                '<img src="' + result.data.spuImageList[i].imgUrl + '" class="rounded-circle " width="70px" height="70px">\n' +
+                '<i class="icon ion-close-round delIcon"></i>\n' +
+                '</div>'
+            $('.imgList').append($(imgItem));
+        }
+    }
+
+
+    function addProcInfo(result) {
+        $('input[name=productName]').val(result.data.productName)
+        $('input[name=productPrice]').val(result.data.productPrice)
+        $('select[name=productStatus]').val(result.data.productStatus)
+        $('select[name=productTag]').val(result.data.productTag)
+        $('.note-editable').html('')
+        $('.note-editable').append(result.data.description)
+    }
+
+</script>
+</body>
+</html>

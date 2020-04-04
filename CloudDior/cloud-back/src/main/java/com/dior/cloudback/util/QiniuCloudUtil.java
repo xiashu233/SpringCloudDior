@@ -33,7 +33,7 @@ public class QiniuCloudUtil {
 
     //private static final String style = "自定义的图片样式";
 
-    public String getUpToken() {        
+    public String getUpToken() {
         return auth.uploadToken(bucketname, null, 3600, new StringMap().put("insertOnly", 1));
     }
     // 普通上传
