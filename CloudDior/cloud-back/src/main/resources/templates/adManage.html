@@ -50,20 +50,34 @@
                                             <div class="float-right">
                                                 <a data-collapse="#mycard-collapse" class="btn btn-icon"><i class="ion ion-minus"></i></a>
                                             </div>
-                                            <h6>轮播图-Banner</h6>
+                                            <div class="row">
+                                                <h6>轮播图-Banner </h6>
+                                                <button class="btn btn-danger btn-addBanner" >添加Banner</button>
+                                            </div>
                                         </div>
                                         <div class="collapse show" id="mycard-collapse">
                                             <div class="card-body">
-                                                <div class="row">
-                                                    <div class="banner-List">
-                                                        <img src="img/index/cdc-femme-collection-ete-20205_1440_1200.jpg" width="20%" >
-                                                        <input type="text" value="图片标题">
-                                                        <p>图片描述</p>
-                                                        <p>链接地址</p>
+
+                                                <form id="uploadImg" action="/uploadImg" method="post" enctype="multipart/form-data">
+                                                    <input type="file" id="imageFile" onchange="uploadFile()" name="image" style="display: none "/>
+                                                    <input type="hidden" name="bannerItemIndex" value="-1">
+                                                </form>
+
+                                                <div class="row banner-List" >
+                                                    <div class="banner-Item col-lg-4 me-banner-card" th:each="ad:${pmsProductAds}">
+                                                        <img class="banner-item-image" th:src="${ad.adContent}" src="https://iph.href.lu/1440x617?text=%E7%82%B9%E5%87%BB%E9%80%89%E6%8B%A9%E6%96%87%E4%BB%B6" width="100%" >
+                                                        <input type="text" readonly="readonly" th:value="${ad.adTitle}" class="form-control" placeholder="图片标题">
+                                                        <input type="text" readonly="readonly" th:value="${ad.adDesc}" class="form-control" placeholder="图片描述">
+                                                        <input type="text" readonly="readonly" th:value="${ad.adUrl}" class="form-control" placeholder="链接地址">
+                                                        <input type="hidden" name="bannerId" th:value="${ad.id}" value="-1">
+                                                        <div class="container-fluid row ">
+                                                            <button type="button" class="btn btn-success col-lg-3 btn-saveBanner" style="margin-left: 3px">保存</button>
+                                                            <button type="button" class="btn btn-warning col-lg-3 btn-changeBanner" style="margin-left: 8px" >修改</button>
+                                                            <button type="button" class="btn btn-danger col-lg-3 btn-removeBanner" style="margin-left: 8px" >删除</button>
+                                                        </div>
                                                     </div>
                                                 </div>
 
-                                                You can show or hide this card.
                                             </div>
                                             <div class="card-footer">
                                                 Card Footer
@@ -107,373 +121,114 @@
 </div>
 
 <script>
-
-    function clearProcData() {
-        $('input[name=productName]').val('')
-        $('input[name=productPrice]').val('')
-        // $('select[name=productStatus]').val('')
-        // $('select[name=productTag]').val('')
-        $('.note-editable').html('')
-
-    }
-
-
-    $('.addAttrItem').click(function () {
-        var attritem = '<tr >\n' +
-            '                <td>\n' +
-            '                    <select class="form-control">\n' +
-            '                           <option value="1">尺码</option>\n' +
-            '                           <option value="2">色号</option>\n' +
-            '                    </select>\n' +
-            '                 </td>\n' +
-            '                 <td class="row">\n' +
-            '                    <button type="button" class="btn btn-sm btn-primary addAttr">添加</button>\n' +
-            '                 </td>\n' +
-            '                 <td>\n' +
-            '                     <button type="button" class="btn btn-action btn-danger btn-delAttrItem">删除</button>\n' +
-            '                 </td>\n' +
-            '             </tr>';
-        $('.attrTable').append($(attritem))
-    });
-    // 新增属性值按钮
-    $(document).on('click', '.addAttr', function () {
-        if (($(this).parent().find('input[type=text]').length == 0 && $(this).parent().find('span').length == 0) || $(this).parent().find('input[type=text]').length == 0) {
-            $(this).before('<input type="text" value="" class="form-control attrItem" style="width: 60px">');
-        } else {
-            toastr.error('请检查是否有未填写的属性值项！', '添加属性值!');
-        }
-    });
-
-    // 属性失去焦点时触发
-    $(document).on('blur', '.attrItem', function () {
-        var attrVal = $(this).val()
-
-        if (attrVal != "") {
-            console.log(attrVal)
-            $(this).before('<span class="btn btn-info btn-sm .m-r-pd-sm attrVal">' + attrVal + '</span>')
-            $(this).remove()
-        }
-    });
-
-    $(document).on('click', '.attrVal', function () {
-        $(this).remove()
-    });
-
-    $(document).on('click', '.btn-delAttrItem', function () {
-        $(this).parent().parent().remove()
-    });
-
-
-    $('.upload').click(function () {
-        $('input[name=upload]').click();
-    });
-
-    $('#saveProc').click(function () {
-        console.log('提交表单信息')
-        $('#uploadImg').attr('action', '/saveProc')
-
-        var imgList = $('.imgList').find('img')
-        var imgListStr = '';
-        for (var i = 0; i < imgList.length; i++) {
-            console.log($('.imgList').find('img').eq(i).attr('src'))
-            imgListStr = imgListStr + ',' + $('.imgList').find('img').eq(i).attr('src');
-        }
-        $('#imgListHide').val(imgListStr);
-
-        console.log($('input[name=imgList]').val())
-
-        // 拼装表格信息
-        if ($('.attrTable').find('tr').length > 1) {
-            var map = {};
-            $('.attrTable').find('tr').each(function () {
-                var key = $(this).find('td:eq(0)').find('select').val();
-                if (key == undefined) {
-                    console.log('此时是第一列')
-                    return true;
-                }
-                console.log('key:' + key)
-                var value = '';
-                $(this).find('td:eq(1)').find('span').each(function () {
-                    value = value + ',' + $(this).text()
-                    console.log($(this).text());
-                })
-                console.log('value:' + value)
-                map[key] = value;
-            })
-            var jsonMap = JSON.stringify(map)
-            $('input[name=attrMap]').val(jsonMap)
-            console.log(jsonMap);
-        }
-
-
-        $('#uploadImg').ajaxSubmit(function (result) {
-            if (result.code == 200) {
-                toastr.warning('插入成功，请检查数据项是否填写正确！', '插入失败');
-                window.location = "/productManage";
-            } else {
-                toastr.warning('插入失败，请检查数据项是否填写正确！', '插入失败');
-
-            }
-        })
-
-    });
-
-
-    $(document).on('click', '.rounded-circle', function () {
-        var index = $(".imgList img").index(this);
-        console.log(index)
-        $('input[name=defaultImgIndex]').val(index)
-        $(this).addClass('defultImg').parent('.uploadImg').siblings().children('.rounded-circle').removeClass('defultImg');
-
-    });
-
-    $(document).on('click', '.delIcon', function () {
-        console.log('点击了删除按钮');
-        $(this).parent().hide();
-        $(this).parent().remove();
-    });
-
-
-    function uploadFile() {
+    // 上传图片方法
+    function uploadFile(){
         console.log('已选择文件');
         var targetUrl = $("#uploadImg").attr("action");
         var formData = new FormData($("#uploadImg")[0]);
         var fileSize = document.getElementById("imageFile").files[0].size;
         console.log(fileSize)
-        if (fileSize > 1024 * 1024) {
-            toastr.warning('图片过大，请压缩后重新上传!', '图片上传');
+        if (fileSize > 1024 * 1024 ){
+            toastr.warning('图片过大，请压缩后重新上传!','图片上传');
             return;
         }
         $.ajax({
-            type: 'post',
-            url: targetUrl,
+            type:'post',
+            url:targetUrl,
             cache: false,    //上传文件不需缓存
             processData: false, //需设置为false。因为data值是FormData对象，不需要对数据做处理
             contentType: false, //需设置为false。因为是FormData对象，且已经声明了属性enctype="multipart/form-data"
-            data: formData,
-            success: function (result) {
+            data:formData,
+            success:function(result){
                 console.log("执行成功:" + result.data)
-
-                var imgItem = ' <div class="uploadImg">\n' +
-                    '<img src="' + result.data + '" class="rounded-circle " width="70px" height="70px">\n' +
-                    '<i class="icon ion-close-round delIcon"></i>\n' +
-                    '</div>'
-                $('.imgList').append($(imgItem));
+                var index = $('input[name=bannerItemIndex]').val()
+                $('.banner-Item:eq(' + index + ')').find('.banner-item-image').attr('src',result.data)
 
 
             },
-            error: function (result) {
+            error:function(result){
                 console.log("执行失败")
             }
         })
     };
 
-
-    $('.catalog1').change(function () {
-        var catalog1 = $(".catalog1 option:selected").val()
-        if (catalog1 != -1) {
-            console.log('catalog1Id:' + catalog1)
-
-            $.post({
-                url: "/getcatalog2/" + catalog1,
-                success: function (result) {
-                    console.log('返回状态码：' + result.code);
-                    $(".catalog2 option:gt(0)").remove()
-                    if (result.code == 200) {
-
-                        for (var catalog = 0; catalog < result.data.length; catalog++) {
-                            $('.catalog2').html($('.catalog2').html() + '<option value="' + result.data[catalog].id + '">' + result.data[catalog].name + '</option>')
-                        }
-                    }
-                }
-            })
-        }
-    });
-
-    $('.catalog2').change(function () {
-        var catalog2 = $(".catalog2 option:selected").val()
-        if (catalog2 != -1) {
-            console.log('catalog2Id:' + catalog2)
-
-            $.post({
-                url: "/getcatalog3/" + catalog2,
-                success: function (result) {
-                    console.log('返回状态码：' + result.code);
-                    $(".catalog3 option:gt(0)").remove()
-                    if (result.code == 200) {
-
-                        for (var catalog = 0; catalog < result.data.length; catalog++) {
-                            $('.catalog3').html($('.catalog3').html() + '<option value="' + result.data[catalog].id + '">' + result.data[catalog].name + '</option>')
-                        }
-                    }
-                }
-            })
-        }
-    });
-
-    $('.catalog3').change(function () {
-        $('.allProc tr:gt(0)').remove()
-        var catalog3 = $(".catalog3 option:selected").val()
-        if (catalog3 != -1) {
-            console.log('catalog3Id:' + catalog3);
-            $('input[name=catalog3Id]').val(catalog3)
-            // 查找填充数据到数据库
-            $.post({
-                url: "/getAllProcByCatalog3/" + catalog3,
-                success: function (result) {
-                    console.log('返回状态码：' + result.code);
-                    filltable(result);
-                }
-            })
-        }
-    });
-
-    function removeProcItem(procId) {
-        //console.log(procId)
-        if (confirm("确认删除吗？")) {
-            $.post({
-                url: "/deleteProc/" + procId,
-                success: function (result) {
-                    if (result.code == 200) {
-                        toastr.success("删除成功！", "删除商品");
-                    } else {
-                        toastr.error("删除失败，发生了不可描述的错误！", "删除商品");
-                    }
-                }
-            })
-        }
-    };
-
-    function descProcItem(procId) {
-        //console.log(procId)
-        $.post({
-            url: "/getProcById/" + procId,
-            success: function (result) {
-                if (result.code == 200) {
-                    // 填充商品基本信息 名称 价格 描述 分类
-                    addProcInfo(result);
-                    // 填充商品配图
-                    addImgItem(result)
-
-
-                    // 隐藏 上传图片以及保存按钮
-                    $('#saveProc').hide()
-                    $('.uploadImgStr').hide()
-
-                    $('#myModal').modal('show')
-                } else {
-                    toastr.error('查询商品详细信息失败，请稍后重试！', '商品详情')
-                }
-
-
-            }
-        })
-
-    };
-
-    // 修改商品事件
-    function changeProcItem(procId) {
-        //console.log(procId)
-        $.post({
-            url: "/getProcById/" + procId,
-            success: function (result) {
-                // 填充商品基本信息 名称 价格 描述 分类
-                addProcInfo(result);
-                // 填充商品配图
-                addImgItem(result);
-
-                // 设置 procId 来识别是否修改操作
-                $('input[name=id]').val(procId);
-
-                // 显示 上传图片以及保存按钮
-                $('#saveProc').show()
-                $('.uploadImgStr').show()
-
-                $('#myModal').modal('show')
-            }
-        })
-
-    };
-
-    $('.btn-search').click(function () {
-        var key = $('.searchStr').val()
-        $.post({
-            url: '/search/' + key,
-            success: function (result) {
-                filltable(result);
-            }
-        })
-    });
-
-    function filltable(result) {
-        var catalog3 = $(".catalog3 option:selected").val()
-        if (catalog3 == -1) {
-            toastr.warning('未选择三级分类，请选择三级分类后重试此操作！', '查询商品')
+    $(document).on('click','.banner-item-image',function () {
+        if ($(this).parent().find('input').attr('readonly') == 'readonly'){
+            toastr.warning('请先启用修改模式后再更换图片','修改图片！')
             return
         }
+        var index = $(this).parent().index();
+        $('#imageFile').click()
+        $('input[name=bannerItemIndex]').val(index)
+        console.log($('input[name=bannerItemIndex]').val())
 
-        $('.allProc').find('tr:gt(0)').remove();
+    });
 
-        for (let i = 0; i < result.data.length; i++) {
-            var imgStr = '';
-            for (let j = 0; j < result.data[i].spuImageList.length; j++) {
-                imgStr = imgStr + '<img alt="image" src="' + result.data[i].spuImageList[j].imgUrl + '" class="rounded-circle" width="35" height="35px" >'
+
+    $(document).on('click','.btn-removeBanner',function () {
+        $(this).parent().parent().remove()
+        var bannerId = $(this).parent().parent().find('input[name=bannerId]').val()
+        if (bannerId != -1){
+            $.post({
+                url: '/delBanner/' + bannerId,
+                success: function (result) {
+                    if (result.code == 200){
+                        toastr.success('删除商品信息成功！','删除商品')
+                    }
+                }
+
+            })
+        }
+
+
+    });
+
+
+    $(document).on('click','.btn-saveBanner',function () {
+        console.log($(this).parent().parent().find('input:eq(0)').attr('readonly'));
+        if ($(this).parent().parent().find('input:eq(0)').attr('readonly') == 'readonly'){
+            toastr.warning('请对Banner进行修改后再进行保存！','banner保存');
+            return
+        }
+        var title = $(this).parent().parent().find('input:eq(0)').val()
+        var adDesc = $(this).parent().parent().find('input:eq(1)').val()
+        var adContent = $(this).parent().parent().find('img:eq(0)').attr('src')
+        var adUrl = $(this).parent().parent().find('input:eq(2)').val()
+        var bannerId = $(this).parent().parent().find('input[name=bannerId]').val()
+        var adType = 'jpg'
+
+        $.post({
+            url: '/saveBanner',
+            data: {id:bannerId,catalog1Id:0,adTitle:title,adDesc:adDesc,adContent:adContent,adUrl:adUrl,adType:adType},
+            success: function (result) {
+                if (result.code == 200){
+                    toastr.success(result.message,'保存成功')
+                }
             }
-            $('.allProc').append(
-                '<tr >\n' +
-                '   <td width="40">\n' +
-                '       <div class="custom-checkbox custom-control">\n' +
-                '            <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1">\n' +
-                '            <label for="checkbox-1" class="custom-control-label"></label>\n' +
-                '       </div>\n' +
-                '   </td>\n' +
-                '   <td>' + result.data[i].productName + '</td>\n' +
-                '   <td>\n' +
 
-                imgStr +
+        })
 
-                '   </td>\n' +
-                '   <td class="align-middle">\n' +
-                result.data[i].productPrice +
-                '   </td>\n' +
-                '   <td class="align-middle">\n' +
-                '#' + result.data[i].productTag +
-                '   </td>\n' +
-                '   <td class="align-middle">\n' +
-                '       <div class="badge badge-success" >' + result.data[i].productStatus + '</div>\n' +
-                '   </td>\n' +
-                '   <td >\n' +
-                '       <button class="btn btn-action btn-success" onclick="descProcItem(' + result.data[i].id + ')" >详情</button>\n' +
-                '       <button class="btn btn-action btn-warning" onclick="changeProcItem(' + result.data[i].id + ')" >修改</button>\n' +
-                '       <button class="btn btn-action btn-danger"  onclick="removeProcItem(' + result.data[i].id + ')" >删除</button>\n' +
-                '   </td>\n' +
-                '</tr>'
-            )
+        $(this).parent().parent().find('input').attr('readonly','readonly');
+    });
 
-        }
-
-    };
-
-    function addImgItem(result) {
-        $('.imgList').children().remove()
-        for (let i = 0; i < result.data.spuImageList.length; i++) {
-            var imgItem = ' <div class="uploadImg">\n' +
-                '<img src="' + result.data.spuImageList[i].imgUrl + '" class="rounded-circle " width="70px" height="70px">\n' +
-                '<i class="icon ion-close-round delIcon"></i>\n' +
-                '</div>'
-            $('.imgList').append($(imgItem));
-        }
-    }
+    $(document).on('click','.btn-changeBanner',function () {
+        $(this).parent().parent().find('input').removeAttr('readonly')
+    });
 
 
-    function addProcInfo(result) {
-        $('input[name=productName]').val(result.data.productName)
-        $('input[name=productPrice]').val(result.data.productPrice)
-        $('select[name=productStatus]').val(result.data.productStatus)
-        $('select[name=productTag]').val(result.data.productTag)
-        $('.note-editable').html('')
-        $('.note-editable').append(result.data.description)
-    }
+    $('.btn-addBanner').click(function () {
+        $('.banner-List').append('<div class="banner-Item col-lg-4 me-banner-card">\n' +
+            '                        <img class="banner-item-image" src="https://iph.href.lu/1440x617?text=%E7%82%B9%E5%87%BB%E9%80%89%E6%8B%A9%E6%96%87%E4%BB%B6" width="100%" >\n' +
+            '                        <input type="text" class="form-control" placeholder="图片标题">\n' +
+            '                        <input type="text" class="form-control" placeholder="图片描述">\n' +
+            '                        <input type="text" class="form-control" placeholder="链接地址">\n' +
+            '                        <div class="container-fluid row ">\n' +
+            '                             <button type="button" class="btn btn-success col-lg-3 btn-saveBanner" style="margin-left: 3px">保存</button>\n' +
+            '                             <button type="button" class="btn btn-warning col-lg-3 btn-changeBanner" style="margin-left: 8px" >修改</button>\n' +
+            '                             <button type="button" class="btn btn-danger col-lg-3 btn-removeBanner" style="margin-left: 8px" >删除</button>\n' +
+            '                         </div>\n' +
+            '                      </div>')
+    })
 
 </script>
 </body>

@@ -1,6 +1,8 @@
 package com.dior.cloudback.controller;
 
 import com.dior.bean.PmsBaseCatalog1;
+import com.dior.bean.PmsProductAds;
+import com.dior.service.AdsService;
 import com.dior.service.CatalogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,8 @@ public class backController {
 
     @Autowired
     CatalogService catalogService;
+    @Autowired
+    AdsService adsService;
 
     @RequestMapping("index")
     public String toIndex(){
@@ -46,8 +50,8 @@ public class backController {
 
     @RequestMapping("adManage")
     public String adManage(ModelMap map){
-        List<PmsBaseCatalog1> catalog1List = catalogService.getAllCatalogOne();
-        map.put("catalog1List",catalog1List);
+        List<PmsProductAds> pmsProductAds = adsService.getAllCatalog1Ads();
+        map.put("pmsProductAds",pmsProductAds);
         return "adManage";
     }
 

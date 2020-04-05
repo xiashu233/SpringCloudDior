@@ -1,9 +1,12 @@
 package com.dior.bean;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-public class pmsProductAds {
+public class PmsProductAds {
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private String id;
     private String catalog1Id;
