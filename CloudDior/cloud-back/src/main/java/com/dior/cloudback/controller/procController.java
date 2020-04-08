@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin
 public class procController {
 
     @Autowired

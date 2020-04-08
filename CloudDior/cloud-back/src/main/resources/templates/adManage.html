@@ -80,10 +80,14 @@
 
                                             </div>
                                             <div class="card-footer">
-                                                Card Footer
+
+
+
                                             </div>
                                         </div>
                                     </div>
+
+
 
                                 </div>
                                 <div class="tab-pane fade" id="profile3" role="tabpanel" aria-labelledby="profile-tab3">
@@ -121,6 +125,8 @@
 </div>
 
 <script>
+
+
     // 上传图片方法
     function uploadFile(){
         console.log('已选择文件');
@@ -213,6 +219,9 @@
 
     $(document).on('click','.btn-changeBanner',function () {
         $(this).parent().parent().find('input').removeAttr('readonly')
+
+        $(this).parent().siblings().children().hide()
+
     });
 
 

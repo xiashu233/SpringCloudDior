@@ -40,6 +40,5 @@ public class adsController {
            return new CommonResult(200,"保存Banner成功！");
        }
         return new CommonResult(500,"保存Banner失败！");
-
     }
 }
